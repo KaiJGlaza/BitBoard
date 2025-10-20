@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
+
 // 1ULL - A 64 bit int that matches the board perfectly - -<@THIS IS A BLANK BOARD@>- use it
 
 /**
@@ -29,6 +31,22 @@ uint64_t clear_bit(uint64_t board, int pos) {
  */
 uint64_t toggle_bit(uint64_t board, int pos) {
     return board ^ (1ULL << pos);
+}
+
+/**
+ * Shift the whole board to the left by @pos
+ */
+uint64_t shift_left(uint64_t board, int pos) {
+    if (pos < 0 || pos >= 64) return board; // Error catch
+    return board << pos;
+}
+
+/**
+ * Shift the whole board to the right by @pos
+ */
+uint64_t shift_right(uint64_t value, int pos) {
+    if (pos < 0 || pos >= 64) return value; // Error catch
+    return value >> pos;
 }
 
 /**
@@ -62,3 +80,67 @@ void print_board(uint64_t board) {
         printf("\n");                           // Clean line
     }
 }
+
+/**
+ * Ripped from OwlTechA1 to convert binary to hexadecimal
+ * 
+ * modified for the 1ULL size
+ */
+void div_convert(uint64_t n, int base, char *out) {
+    char temp [65]; // 64 bits
+    int pos = 0;
+
+    if (n == 0) { // Error catch if 0
+        strcpy(out, "0"); 
+        return;
+    }
+
+    while (n > 0) {
+        int remainder = n % base; 
+        n = n / base;
+
+        if (remainder < 10)
+            temp[pos++] = (char)('0' + remainder); // it kept giving errors so I wrapped
+        else // Hexadecimal
+            temp[pos++] = (char)('A' + (remainder - 10)); // Hexadecimal letters only start at 10
+    }
+    // Starting at the end (pos - 1) and working backwards
+    for (int i = 0; i < pos; i++) {
+        out[i] = temp[pos - i - 1];
+    }
+
+    out[pos] = '\0'; // Adds terminator at the end regardless of base
+}
+
+// Prints the board in binary (grouped every 4 bits)
+void print_binary(uint64_t value) {
+    for (int i = 63; i >= 0; i--) {
+        printf("%d", get_bit(value, i));
+        if (i % 4 == 0 && i != 0) printf(" ");
+    }
+    printf("\n");
+}
+
+/**
+ * Print 64-bit board in hex, single line,
+ * with 1 space per hex digit (4 bits per group)
+ */
+void print_hex(uint64_t board) {
+    char hex[17];
+    div_convert(board, 16, hex);
+
+    // pad with leading zeros to make 16 digits
+    int len = strlen(hex);
+    int pad = 16 - len;
+
+    for (int i = 0; i < pad; i++) {
+        printf("0 ");
+    }
+
+    for (int i = 0; i < len; i++) {
+        printf("%c ", hex[i]);
+    }
+
+    printf("\n");
+}
+
