@@ -1,6 +1,15 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+/**
+ * IMPORTANT: Shift operations are done looking at it like a one line binary,
+ * s.t. shifting left means shifting closer to most significant bit (63) and right
+ * means shifting closer to least significant (0)
+ * ---->         <----
+ * 0000 1110 1001 1001
+ * ---->         <----
+ */ 
+
 
 // 1ULL - A 64 bit int that matches the board perfectly - -<@THIS IS A BLANK BOARD@>- use it
 
@@ -47,6 +56,26 @@ uint64_t shift_left(uint64_t board, int pos) {
 uint64_t shift_right(uint64_t value, int pos) {
     if (pos < 0 || pos >= 64) return value; // Error catch
     return value >> pos;
+}
+
+/**
+ * Shift an individual bit safely.
+ * dir = -1 for left, 1 for right
+ * Error handling at edges (bit 0 and bit 63)
+ */
+uint64_t shift_bit(uint64_t board, int pos, int dir) {
+    if (pos < 0 || pos > 63) return board; // invalid position, do nothing
+
+    uint64_t mask = 1ULL << pos;    // isolate the bit
+    board &= ~mask;                 // remove it from original position
+
+    if (dir < 0) {                  // shift left
+        if (pos < 63) mask <<= 1;   // only if not at left edge
+    } else {                        // shift right
+        if (pos > 0) mask >>= 1;    // only if not at right edge
+    }
+
+    return board | mask;            // put the shifted bit back
 }
 
 /**
@@ -143,4 +172,3 @@ void print_hex(uint64_t board) {
 
     printf("\n");
 }
-
