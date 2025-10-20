@@ -54,4 +54,11 @@ int count_bits(uint64_t board) {
 
 // Print the board as an 8x8 grid
 void print_board(uint64_t board) {
+    for (int row = 7; row >= 0; row--) {        // Start at the top
+        for (int col = 0; col < 8; col++) {     // to 8 because 7 * 8 = 63, last spot
+            int pos = row * 8 + col;            // get position
+            printf("%d ", get_bit(board, pos)); // Print the current bit using get_bit
+        }
+        printf("\n");                           // Clean line
+    }
 }
