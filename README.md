@@ -12,6 +12,13 @@ gcc checkers.c -o checkers
 ./checkers
 
 ```
+## Game Instructions
+The move format: from_row from_column to_row to_column, specifying with coordinates how you want to move your piece
+
+If you want to quit before actually finishing the game, enter -1 at any time
+
+It follows standard checkers rules
+
 ## Notes
 Since I've had some decent practice now the `bitops.c` file was not too hard to code at all
 `checkers.c` was by far the hardest to code, as it just felt like it was taking forever and hurt me the most
