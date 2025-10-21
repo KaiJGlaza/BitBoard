@@ -7,7 +7,7 @@ My implementation of Owl Tech’s BitBoard Checkers game
 ```
 bash
 
-gcc checkers.c -o checkers
+make
 
 ./checkers
 
@@ -28,6 +28,8 @@ I did like the freedom to kind of code whatever I want to make it work
 
 ## Biggest Struggles
 The pointers like using `->` I quickly got the hang of
+
+Makefile was super weird
 
 Checking for Kings was the hardest conceptually with the 0x000000 bit stuff but YT helped a lot
 
